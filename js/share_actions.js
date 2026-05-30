@@ -22,6 +22,13 @@ function setShareContext({ text, url, filename }) {
   if (previewEl) {
     previewEl.textContent = _currentShare.text + ' ' + _currentShare.url;
   }
+  // モーダル開いた直後のスクロール位置をトップにリセット（iOS Safariで効く）
+  setTimeout(() => {
+    const modal = document.getElementById('share-modal');
+    if (modal && modal.classList.contains('active')) {
+      modal.scrollTop = 0;
+    }
+  }, 50);
 }
 
 // =====================

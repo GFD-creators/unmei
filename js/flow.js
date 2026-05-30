@@ -101,6 +101,17 @@ function answerQuestion(axis) {
   }
 }
 
+// 色名を文字数に応じてフォントサイズ調整しつつセット
+function setColorName(name) {
+  const el = document.getElementById('result-color-name');
+  el.textContent = name;
+  // 7文字以下=13px(デフォルト)、8-9=11px、10以上=10px
+  const len = (name || '').length;
+  if (len >= 10)      el.style.fontSize = '10px';
+  else if (len >= 8)  el.style.fontSize = '11px';
+  else                el.style.fontSize = '13px';
+}
+
 function goBackQuestion() {
   if (state.questionIndex > 0) {
     state.questionIndex--;
@@ -160,7 +171,7 @@ function showResult() {
     document.getElementById('result-catch').textContent = state.rareType.catch;
     document.getElementById('result-desc').textContent = state.rareType.desc;
     document.getElementById('result-color-dot').style.background = state.rareType.color;
-    document.getElementById('result-color-name').textContent = state.rareType.colorName;
+    setColorName(state.rareType.colorName);
     charDisplay.innerHTML = getCharHTML(state.rareType.charKey || state.rareType.char);
   } else {
     badgeWrapper.innerHTML = '';
@@ -170,7 +181,7 @@ function showResult() {
     document.getElementById('result-catch').textContent = details.catch;
     document.getElementById('result-desc').textContent = details.desc;
     document.getElementById('result-color-dot').style.background = details.color;
-    document.getElementById('result-color-name').textContent = details.colorName;
+    setColorName(details.colorName);
     charDisplay.innerHTML = getCharHTML(mbti);
   }
 

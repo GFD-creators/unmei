@@ -879,13 +879,36 @@ body {
   font-size: 13px;
   flex-wrap: nowrap;
   min-width: 0;
+  line-height: 1.2;
+  padding: 0 2px;
+  white-space: normal;          /* 親.attr-valueのnowrapを解除 */
+  overflow: visible;            /* 切り詰めず表示 */
 }
 
 .attr-value.color-dot span:last-child {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /* 長い色名でも折返し可能 — JS側で文字数に応じてフォントサイズも調整 */
+  white-space: normal;
+  word-break: break-all;
+  overflow-wrap: anywhere;
   min-width: 0;
+  flex: 1 1 auto;
+  overflow: visible;
+  text-overflow: clip;
+  text-align: center;
+}
+
+/* attr-box は高さ自動調整、内容溢れ防止 */
+.attr-box {
+  background: var(--bg-pink-light);
+  border: 2px solid var(--border-pink);
+  border-radius: 12px;
+  padding: 12px 6px;
+  text-align: center;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 78px;
 }
 
 .color-circle {
@@ -1076,15 +1099,23 @@ body {
   -webkit-backdrop-filter: blur(8px);
   z-index: 200;
   display: none;
-  align-items: center;
-  justify-content: center;
   padding: 20px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;   /* iOS慣性スクロール */
 }
 
-.modal.active { display: flex; }
+/* flex centering ではなく block + margin auto で「内容が画面より大きい時も上部にスクロール可能」 */
+.modal.active { display: block; }
 
-.modal-content { max-width: 360px; width: 100%; text-align: center; }
+.modal-content {
+  max-width: 360px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  /* セーフエリア (iPhone X以降の上下ノッチ) を考慮 */
+  padding-top: env(safe-area-inset-top, 0);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
 
 .modal-image {
   width: 100%;
