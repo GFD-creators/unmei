@@ -1,0 +1,27 @@
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python (画像生成スクリプト用)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 高解像度ソース画像 (中間生成用、git管理しない)
+_hires_*.webp
+_check_*.png
+
+# 一時的スクリーンショット
+*.tmp
+.playwright-mcp/
+
+# ローカルサーバログ
+*.log

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>運命図鑑 ウンメイ</title>
+
+<!-- PWA Phase 1 -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ff6fb3">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ウンメイ">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
+
+<!-- OGP -->
+<meta property="og:title" content="運命図鑑 ウンメイ">
+<meta property="og:description" content="あなたの生まれた日にきざまれた運命のしるしを占う">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/icons/icon-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Kosugi+Maru&family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=15.1.1">
+</head>
+<body>
+
+<div class="bg-pattern"></div>
+<div class="bg-dots"></div>
+<div class="floating-stars" id="floating-stars"></div>
+
+<div class="container">
+
+  <div class="screen active" id="screen-opening">
+    <div class="opening">
+      <h1 class="title-main">運命図鑑</h1>
+      <div class="title-sub">U N M E I</div>
+      <div class="opening-poem">
+        <span class="line">あなたの生まれた日に</span>
+        <span class="line">空にきざまれた運命のしるし</span>
+        <span class="line">いま、ひらかれる♡</span>
+      </div>
+
+      <div class="preview-chars" id="preview-chars"></div>
+
+      <button class="btn" onclick="goToScreen('birthdate')">運命をみる</button>
+      <div class="opening-meta">★ 1 6 ★ の キ ャ ラ ク タ ー</div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-birthdate">
+    <h2 class="screen-title">生年月日</h2>
+    <p class="screen-subtitle">あなたが うまれた日</p>
+
+    <div class="date-input-group">
+      <div class="date-field" onclick="openYearPicker()">
+        <input type="text" id="year" placeholder="2007" readonly>
+        <label>と し</label>
+      </div>
+      <div class="date-field">
+        <input type="number" id="month" placeholder="5" min="1" max="12">
+        <label>つ き</label>
+      </div>
+      <div class="date-field">
+        <input type="number" id="day" placeholder="14" min="1" max="31">
+        <label>ひ</label>
+      </div>
+    </div>
+
+    <button class="btn" onclick="validateAndProceed()">うらないスタート</button>
+  </div>
+
+  <div class="screen" id="screen-question">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width: 5%"></div>
+    </div>
+    <div class="progress-count" id="progress-count">★ 1 / 20 ★</div>
+    <div class="question-card">
+      <div class="question-num" id="q-num">QUESTION 1</div>
+      <div class="question-text" id="q-text"></div>
+      <div class="answer-options" id="q-options"></div>
+    </div>
+    <button class="btn-back" id="btn-back" onclick="goBackQuestion()" style="display:none;">← もどる</button>
+  </div>
+
+  <div class="screen" id="screen-ritual">
+    <div class="ritual-loading">
+      <div class="ritual-char" id="ritual-char"></div>
+      <div class="ritual-text" id="ritual-text">あなたの星をよんでいるよ</div>
+      <div class="ritual-sub" id="ritual-sub">ちょっとまってね<span class="loading-dots">・・・</span></div>
+    </div>
+  </div>
+
+  <!-- 招待ウェルカム画面 -->
+  <div class="screen" id="screen-invite-welcome">
+    <div class="invite-welcome">
+      <div class="invite-heart">
+        <svg viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="30" width="100" height="65" rx="8" fill="#fffaef" stroke="#e8358c" stroke-width="3"/>
+          <path d="M10 38 L60 70 L110 38" fill="none" stroke="#e8358c" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M10 95 L45 65 M110 95 L75 65" stroke="#ffaad4" stroke-width="2" stroke-linejoin="round" fill="none"/>
+          <g transform="translate(60 55)">
+            <path d="M0 8 C-8 -2, -18 -2, -18 8 C-18 18, 0 28, 0 28 C0 28, 18 18, 18 8 C18 -2, 8 -2, 0 8 Z"
+                  fill="#ff6fb3" stroke="#e8358c" stroke-width="2"/>
+            <ellipse cx="-6" cy="6" rx="3" ry="2" fill="#ffaad4" opacity="0.8"/>
+          </g>
+          <text x="18" y="22" font-size="14" fill="#ffd93d" font-weight="bold">✦</text>
+          <text x="98" y="22" font-size="14" fill="#ffd93d" font-weight="bold">✦</text>
+          <text x="18" y="98" font-size="12" fill="#c4b5fd" font-weight="bold">★</text>
+        </svg>
+      </div>
+      <h2 class="invite-title" id="invite-title-text">ふたりの 運命 ♡</h2>
+      <p class="invite-subtitle" id="invite-subtitle-text">あの子があなたとの相性を知りたがってます</p>
+      <div class="invite-partner-card">
+        <div class="invite-partner-char" id="invite-partner-char"></div>
+        <div class="invite-partner-info">
+          <div class="invite-partner-name" id="invite-partner-name"></div>
+          <div class="invite-partner-type" id="invite-partner-type"></div>
+        </div>
+      </div>
+      <p class="invite-cta">あなたも 占って みよう ♡</p>
+      <button class="btn" onclick="startInviteFlow()">うんめいを みる</button>
+      <button class="btn btn-outline btn-small" onclick="cancelInviteMode()">あとで</button>
+    </div>
+  </div>
+
+  <!-- 相性結果画面 -->
+  <div class="screen" id="screen-compatibility">
+    <div class="comp-header">
+      <div class="comp-title-mini">♡ ふたりの運命 ♡</div>
+      <div class="comp-rank-card" id="comp-rank-card">
+        <div class="comp-rank-emoji" id="comp-rank-emoji"></div>
+        <div class="comp-rank-letter" id="comp-rank-letter">SS</div>
+        <div class="comp-rank-score" id="comp-rank-score">95<span class="comp-rank-score-unit">点</span></div>
+        <div class="comp-rank-label" id="comp-rank-label">運命の出会い</div>
+      </div>
+    </div>
+
+    <div class="comp-pair-card">
+      <div class="comp-pair-row">
+        <div class="comp-pair-side">
+          <div class="comp-pair-char" id="comp-me-char"></div>
+          <div class="comp-pair-name" id="comp-me-name">あなた</div>
+          <div class="comp-pair-type" id="comp-me-type"></div>
+        </div>
+        <div class="comp-pair-heart" id="comp-pair-heart">♡</div>
+        <div class="comp-pair-side">
+          <div class="comp-pair-char" id="comp-partner-char"></div>
+          <div class="comp-pair-name" id="comp-partner-name">あの子</div>
+          <div class="comp-pair-type" id="comp-partner-type"></div>
+        </div>
+      </div>
+      <div class="comp-same-badge" id="comp-same-badge" style="display:none;">★ 奇跡の同タイプ ★</div>
+    </div>
+
+    <div class="comp-message-card">
+      <div class="comp-message-label">♡ ふたりへの メッセージ ♡</div>
+      <div class="comp-message-text" id="comp-message-text"></div>
+    </div>
+
+    <div class="comp-breakdown">
+      <div class="comp-breakdown-row">
+        <span>性格の相性</span>
+        <span class="comp-breakdown-bar"><span class="comp-breakdown-fill" id="comp-mbti-fill"></span></span>
+        <span class="comp-breakdown-score" id="comp-mbti-score">0 / 60</span>
+      </div>
+      <div class="comp-breakdown-row">
+        <span>しるしの相性</span>
+        <span class="comp-breakdown-bar"><span class="comp-breakdown-fill" id="comp-zodiac-fill"></span></span>
+        <span class="comp-breakdown-score" id="comp-zodiac-score">0 / 30</span>
+      </div>
+      <div class="comp-breakdown-row">
+        <span>運命ボーナス</span>
+        <span class="comp-breakdown-bar"><span class="comp-breakdown-fill" id="comp-rare-fill"></span></span>
+        <span class="comp-breakdown-score" id="comp-rare-score">0 / 10</span>
+      </div>
+    </div>
+
+    <div class="comp-actions">
+      <button class="btn btn-yellow" onclick="generatePairShareImage()">★ ふたりの画像を つくる ★</button>
+      <button class="btn" onclick="openMyInviteShare()">★ もう一人と ためす ★</button>
+      <button class="btn btn-outline" onclick="goToScreen('result')">じぶんの結果を みる</button>
+    </div>
+  </div>
+
+  <!-- 招待URL生成・シェアモーダル -->
+  <div class="modal" id="invite-share-modal">
+    <div class="modal-content invite-share-modal-inner">
+      <h3 class="modal-title">★ 友達に おくる ★</h3>
+      <p class="modal-subtitle">あの子との相性を 知りたい？</p>
+
+      <div class="invite-name-input-group">
+        <label class="invite-name-label">なまえ（ニックネーム）</label>
+        <input type="text" id="inviter-name-input" placeholder="ゆうな" maxlength="10">
+        <p class="invite-name-hint">未入力でも大丈夫だよ</p>
+      </div>
+
+      <div class="invite-url-box">
+        <div class="invite-url-label">あなたの 招待リンク</div>
+        <div class="invite-url-text" id="invite-url-display">リンクを 生成中...</div>
+      </div>
+
+      <button class="btn btn-yellow" onclick="copyInviteUrl()">★ リンクを コピー ★</button>
+      <button class="btn" onclick="shareInviteToLine()">LINEで おくる</button>
+      <button class="btn btn-outline" onclick="closeInviteShareModal()">とじる</button>
+
+      <div id="invite-copy-success" class="invite-copy-success">コピーしました ♡</div>
+    </div>
+  </div>
+
+  <!-- レア演出画面 -->
+  <div class="screen" id="screen-rare-summon">
+    <div class="rare-summon-container">
+      <div class="rare-magic-circle">
+        <svg viewBox="0 0 300 300" class="magic-circle-outer">
+          <circle cx="150" cy="150" r="140" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="6,3"/>
+          <circle cx="150" cy="150" r="120" fill="none" stroke="#ffd93d" stroke-width="2"/>
+          <g fill="#ff6fb3">
+            <text x="150" y="35" text-anchor="middle" font-size="28">♡</text>
+            <text x="231" y="60" text-anchor="middle" font-size="24">♡</text>
+            <text x="265" y="155" text-anchor="middle" font-size="28">♡</text>
+            <text x="231" y="250" text-anchor="middle" font-size="24">♡</text>
+            <text x="150" y="275" text-anchor="middle" font-size="28">♡</text>
+            <text x="69" y="250" text-anchor="middle" font-size="24">♡</text>
+            <text x="35" y="155" text-anchor="middle" font-size="28">♡</text>
+            <text x="69" y="60" text-anchor="middle" font-size="24">♡</text>
+          </g>
+        </svg>
+        <svg viewBox="0 0 300 300" class="magic-circle-inner">
+          <circle cx="150" cy="150" r="100" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="4,4"/>
+          <circle cx="150" cy="150" r="80" fill="none" stroke="#ffd93d" stroke-width="1.5"/>
+          <g fill="#ffd93d">
+            <text x="150" y="68" text-anchor="middle" font-size="24">★</text>
+            <text x="220" y="118" text-anchor="middle" font-size="20">★</text>
+            <text x="220" y="195" text-anchor="middle" font-size="20">★</text>
+            <text x="150" y="245" text-anchor="middle" font-size="24">★</text>
+            <text x="80" y="195" text-anchor="middle" font-size="20">★</text>
+            <text x="80" y="118" text-anchor="middle" font-size="20">★</text>
+          </g>
+          <text x="150" y="158" text-anchor="middle" fill="#fff" font-family="M PLUS Rounded 1c, sans-serif" font-size="18" font-weight="bold">♡ うんめい ♡</text>
+        </svg>
+      </div>
+
+      <div class="rare-light-rays">
+        <div class="ray ray-1"></div>
+        <div class="ray ray-2"></div>
+        <div class="ray ray-3"></div>
+        <div class="ray ray-4"></div>
+        <div class="ray ray-5"></div>
+        <div class="ray ray-6"></div>
+        <div class="ray ray-7"></div>
+        <div class="ray ray-8"></div>
+      </div>
+
+      <div class="sparkles" id="rare-sparkles"></div>
+      <div class="rare-char-reveal" id="rare-char-reveal"></div>
+
+      <div class="rare-message" id="rare-message">
+        <div class="rare-message-line1" id="rare-msg-1"></div>
+        <div class="rare-message-line2" id="rare-msg-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-result">
+    <div class="result-card" id="result-card-main">
+      <div id="rare-badge-wrapper"></div>
+      <div class="result-label">★ あ な た の 運 命 タ イ プ ★</div>
+
+      <div class="char-display" id="char-display"></div>
+
+      <h1 class="result-type" id="result-type">さみしがりの ものしりねこ</h1>
+      <p class="result-catchphrase" id="result-catch">本当はやさしい かしこい子</p>
+
+      <div class="result-divider"></div>
+
+      <div class="result-attr-grid">
+        <div class="attr-box">
+          <div class="attr-label">しるし</div>
+          <div class="attr-value" id="result-zodiac">辰</div>
+        </div>
+        <div class="attr-box">
+          <div class="attr-label">タイプ</div>
+          <div class="attr-value" id="result-mbti">INTJ</div>
+        </div>
+        <div class="attr-box">
+          <div class="attr-label">運命の色</div>
+          <div class="attr-value color-dot">
+            <span class="color-circle" id="result-color-dot"></span>
+            <span id="result-color-name">ラベンダー</span>
+          </div>
+        </div>
+        <div class="attr-box">
+          <div class="attr-label">きょうの運</div>
+          <div class="attr-value" id="result-luck">87</div>
+        </div>
+      </div>
+
+      <div class="result-description" id="result-desc"></div>
+    </div>
+
+    <!-- ★ NEW: 7軸全国ランキング ★ -->
+    <div class="section-title">全 国 ラ ン キ ン グ</div>
+    <div class="ranking-card">
+      <div class="ranking-sub">全国 8 0 0 万 人 中 の あなたの 順位</div>
+      <div id="ranking-list"></div>
+      <button class="btn btn-yellow ranking-share-btn" onclick="generateRankingCard()">
+        ★ 偏差値カードを つくる ★
+        <span class="btn-sub">TikTok・X で バズる 縦長カード</span>
+      </button>
+    </div>
+
+    <div class="section-title">あ な た の く せ</div>
+    <div class="info-card warning">
+      <div class="card-label">✕ ちょっとした弱点</div>
+      <div class="card-text" id="result-flaw"></div>
+    </div>
+
+    <div class="section-title">か く れ た 魅 力</div>
+    <div class="info-card charm">
+      <div class="card-label">◆ ほんとうのあなた</div>
+      <div class="card-text" id="result-charm"></div>
+    </div>
+
+    <div class="section-title">鏡 う つ し の 子</div>
+    <div class="mirror-card">
+      <div class="mirror-label">あなたと正反対の運命</div>
+      <div class="mirror-char" id="mirror-char"></div>
+      <div class="mirror-type" id="result-mirror">てれやの いたずらきつね</div>
+      <div class="mirror-desc" id="result-mirror-desc"></div>
+    </div>
+
+    <div class="relation-grid">
+      <div class="relation-card warning">
+        <div class="relation-label">⚠ ニガテな子</div>
+        <div class="relation-value" id="result-warning"></div>
+      </div>
+      <div class="relation-card soulmate">
+        <div class="relation-label">♡ うんめいの子</div>
+        <div class="relation-value" id="result-soulmate"></div>
+      </div>
+    </div>
+
+    <div class="section-title">恋 に お ち る 瞬 間</div>
+    <div class="info-card love">
+      <div class="card-label">♡ あなたが好きになる時</div>
+      <div class="card-text" id="result-love"></div>
+    </div>
+
+    <div class="section-title">3 0 歳 ま で の 予 言</div>
+    <div class="info-card gold">
+      <div class="card-label">★ あなたが手にするもの</div>
+      <div class="card-text" id="result-prophecy"></div>
+    </div>
+
+    <div class="share-buttons">
+      <button class="btn btn-yellow" onclick="generateShareImage()">
+        ★ 運命カードを つくる ★
+        <span class="btn-sub">Instagram ストーリー 向け 縦長 画像</span>
+      </button>
+      <button class="btn" onclick="openMyInviteShare()">★ 友達と 相性チェック ★</button>
+      <button class="btn btn-outline" onclick="restart()">もういちどやる</button>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="year-picker" id="year-picker">
+  <div class="year-picker-content">
+    <div class="year-picker-title">★ うまれた年 ★</div>
+    <div class="year-grid" id="year-grid"></div>
+  </div>
+</div>
+
+<div class="modal" id="share-modal">
+  <div class="modal-content">
+    <img class="modal-image" id="share-image-preview" alt="シェア画像">
+
+    <div class="share-text-box">
+      <div class="share-text-label">★ シェア文 ★</div>
+      <div id="share-text-preview" class="share-text-content"></div>
+    </div>
+
+    <div class="share-actions-grid">
+      <button class="share-action-btn web-share" onclick="tryWebShare()">
+        <span class="share-action-icon">📤</span>
+        <span class="share-action-label">シェア</span>
+      </button>
+      <button class="share-action-btn dl" onclick="downloadShareImage()">
+        <span class="share-action-icon">⬇</span>
+        <span class="share-action-label">画像 DL</span>
+      </button>
+      <button class="share-action-btn copy" onclick="copyShareText()">
+        <span class="share-action-icon">📋</span>
+        <span class="share-action-label">文 コピー</span>
+      </button>
+      <button class="share-action-btn twitter" onclick="shareToTwitter()">
+        <span class="share-action-icon">𝕏</span>
+        <span class="share-action-label">X</span>
+      </button>
+      <button class="share-action-btn line" onclick="shareToLineImage()">
+        <span class="share-action-icon">💬</span>
+        <span class="share-action-label">LINE</span>
+      </button>
+    </div>
+
+    <div class="modal-instructions">
+      ♡ 画像を保存して 友達に 見せてね ♡
+    </div>
+    <button class="modal-close" onclick="document.getElementById('share-modal').classList.remove('active')">とじる</button>
+  </div>
+</div>
+
+<canvas id="share-canvas" width="1080" height="1920" style="display:none;"></canvas>
+
+<!-- v15.1: モジュール分離 -->
+<script src="js/data.js?v=15.1.1"></script>
+<script src="js/rare.js?v=15.1.1"></script>
+<script src="js/compatibility.js?v=15.1.1"></script>
+<script src="js/ranking.js?v=15.1.1"></script>
+<script src="js/share_actions.js?v=15.1.1"></script>
+<script src="js/ranking_card.js?v=15.1.1"></script>
+<script src="js/flow.js?v=15.1.1"></script>
+<script src="js/share.js?v=15.1.1"></script>
+<script src="js/main.js?v=15.1.1"></script>
+
+</body>
+</html>
