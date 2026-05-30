@@ -3,7 +3,7 @@
 // 戦略: App Shell + 画像を初回キャッシュ、以降は Cache First
 // ============================================
 
-const CACHE_VERSION = 'unmei-v15.1.2';
+const CACHE_VERSION = 'unmei-v15.1.3';
 const STATIC_CACHE  = `${CACHE_VERSION}-static`;
 const IMAGE_CACHE   = `${CACHE_VERSION}-images`;
 
