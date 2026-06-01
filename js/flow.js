@@ -28,7 +28,8 @@ function openYearPicker() {
   const grid = document.getElementById('year-grid');
   grid.innerHTML = '';
   const currentYear = new Date().getFullYear();
-  for (let y = currentYear; y >= currentYear - 30; y--) {
+  // 80年遡及 = 10代 ~ 80代 まで対応
+  for (let y = currentYear; y >= currentYear - 80; y--) {
     const item = document.createElement('div');
     item.className = 'year-item';
     item.textContent = y;

@@ -46,7 +46,7 @@ const INFO_CONTENT = {
   ranking: {
     icon: '🏆',
     title: '全国 ランキング って？',
-    body: `日本の <strong>10〜20代女子 約800万人</strong> という仮想母集団のなかで、<br>
+    body: `<strong>全国 約800万人</strong> という仮想母集団のなかで、<br>
 あなたが <strong>7つの軸 (モテ / コミュ力 / 金運 / 一途度 / 天才度 / メンタル / ヤンデレ度)</strong> でどこに位置するか算出 ♡<br><br>
 スコアは <strong>MBTI × 干支 × レアキャラ</strong> の組合せで決定。<br><br>
 低スコアは<strong>「内に秘めた魅力派」</strong>等の<strong>救済コピー</strong>で表示するから、誰でも安心して楽しんでね ★`
