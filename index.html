@@ -38,7 +38,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Kosugi+Maru&family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=15.1.4">
+<link rel="stylesheet" href="css/style.css?v=15.1.5">
 </head>
 <body>
 
@@ -104,8 +104,12 @@
   </div>
 
   <div class="screen" id="screen-question">
+    <!-- 励まし文言（質問数に応じて変化）-->
+    <div class="progress-cheer" id="progress-cheer">♡ Q U E S T I O N ♡</div>
+    <!-- プログレスバー (改良: 太く・グラデ強・先端ハート・% 表示) -->
     <div class="progress-bar">
-      <div class="progress-fill" id="progress-fill" style="width: 5%"></div>
+      <div class="progress-fill" id="progress-fill" style="width: 5%"><span class="progress-tip">♡</span></div>
+      <div class="progress-percent" id="progress-percent">5%</div>
     </div>
     <div class="progress-count" id="progress-count">★ 1 / 20 ★</div>
     <div class="question-card">
@@ -458,16 +462,16 @@
 </div>
 
 <!-- v15.1: モジュール分離 -->
-<script src="js/data.js?v=15.1.4"></script>
-<script src="js/rare.js?v=15.1.4"></script>
-<script src="js/compatibility.js?v=15.1.4"></script>
-<script src="js/ranking.js?v=15.1.4"></script>
-<script src="js/share_actions.js?v=15.1.4"></script>
-<script src="js/ranking_card.js?v=15.1.4"></script>
-<script src="js/info_modal.js?v=15.1.4"></script>
-<script src="js/flow.js?v=15.1.4"></script>
-<script src="js/share.js?v=15.1.4"></script>
-<script src="js/main.js?v=15.1.4"></script>
+<script src="js/data.js?v=15.1.5"></script>
+<script src="js/rare.js?v=15.1.5"></script>
+<script src="js/compatibility.js?v=15.1.5"></script>
+<script src="js/ranking.js?v=15.1.5"></script>
+<script src="js/share_actions.js?v=15.1.5"></script>
+<script src="js/ranking_card.js?v=15.1.5"></script>
+<script src="js/info_modal.js?v=15.1.5"></script>
+<script src="js/flow.js?v=15.1.5"></script>
+<script src="js/share.js?v=15.1.5"></script>
+<script src="js/main.js?v=15.1.5"></script>
 
 </body>
 </html>

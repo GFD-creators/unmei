@@ -67,13 +67,57 @@ function validateAndProceed() {
   renderQuestion();
 }
 
+// 質問数別の励まし文言 (key = 質問番号、1-based)
+const CHEER_MESSAGES = {
+  1:  { text: '♡ Q U E S T I O N ♡',         milestone: false },
+  3:  { text: '★ 順調！ この調子 ♡',           milestone: false },
+  5:  { text: '✦ 1/4 達成 ★ いい感じ ♡',       milestone: true  },
+  7:  { text: '♡ ノってきた！ ★',              milestone: false },
+  10: { text: '★ 半分まで きた！ ♡♡',         milestone: true  },
+  13: { text: '✦ ラスト 3 / 8 問 ♡',          milestone: false },
+  15: { text: '♡ ラストスパート ★ もう少し！',  milestone: true  },
+  18: { text: '★ 残り 3問！ がんばれ ♡',       milestone: false },
+  20: { text: '♡ ラスト 1問 ♡♡♡',             milestone: true  },
+};
+
+function updateCheer(qIndex) {
+  // qIndex は 0-based 状態のインデックス、表示は 1-based
+  const qNum = qIndex + 1;
+  // 直近の閾値メッセージを採用
+  const keys = Object.keys(CHEER_MESSAGES).map(Number).sort((a,b)=>a-b);
+  let chosen = keys[0];
+  for (const k of keys) {
+    if (qNum >= k) chosen = k;
+  }
+  const cheer = CHEER_MESSAGES[chosen];
+  const el = document.getElementById('progress-cheer');
+  if (!el) return;
+  el.textContent = cheer.text;
+  // アニメーション再発火のため class を一度外す
+  el.classList.remove('milestone');
+  void el.offsetWidth;
+  if (cheer.milestone) el.classList.add('milestone');
+  // pop アニメ再発火
+  el.style.animation = 'none';
+  void el.offsetWidth;
+  el.style.animation = '';
+}
+
 function renderQuestion() {
   const q = QUESTIONS[state.questionIndex];
   const totalQ = QUESTIONS.length;
-  document.getElementById('q-num').textContent = 'QUESTION ' + (state.questionIndex + 1);
+  const qNum = state.questionIndex + 1;
+  const pct = Math.round((qNum / totalQ) * 100);
+
+  document.getElementById('q-num').textContent = 'QUESTION ' + qNum;
   document.getElementById('q-text').textContent = q.text;
-  document.getElementById('progress-fill').style.width = ((state.questionIndex + 1) / totalQ * 100) + '%';
-  document.getElementById('progress-count').textContent = `★ ${state.questionIndex + 1} / ${totalQ} ★`;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  const pctEl = document.getElementById('progress-percent');
+  if (pctEl) pctEl.textContent = pct + '%';
+  document.getElementById('progress-count').textContent = `★ ${qNum} / ${totalQ} ★`;
+
+  // 励まし文言更新
+  updateCheer(state.questionIndex);
 
   const btnBack = document.getElementById('btn-back');
   btnBack.style.display = state.questionIndex > 0 ? 'block' : 'none';

@@ -412,29 +412,99 @@ body {
 
 .answer-btn:active::before { color: white; }
 
+/* 励まし文言エリア (プログレスバー上部) */
+.progress-cheer {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.1em;
+  text-align: center;
+  color: var(--pink-dark);
+  margin-bottom: 10px;
+  min-height: 24px;
+  animation: cheerPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.progress-cheer.milestone {
+  font-size: 18px;
+  background: linear-gradient(90deg, #ffd93d, var(--pink-main), #c4b5fd);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: cheerPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), cheerPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes cheerPop {
+  0% { opacity: 0; transform: translateY(-8px) scale(0.85); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes cheerPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* プログレスバー (改良版: 太く・派手) */
 .progress-bar {
-  height: 12px;
+  height: 22px;
   background: var(--bg-pink-light);
-  border: 2px solid var(--border-pink);
-  border-radius: 8px;
-  margin-bottom: 14px;
+  border: 3px solid var(--border-pink);
+  border-radius: 14px;
+  margin-bottom: 6px;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  box-shadow: 0 3px 0 var(--bg-pink-deep), inset 0 2px 4px rgba(255, 143, 196, 0.15);
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #ffb8d8, var(--pink-main));
-  border-radius: 6px;
-  transition: width 0.5s;
-  background-image: linear-gradient(45deg, rgba(255,255,255,0.3) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.3) 75%, transparent 75%);
-  background-size: 16px 16px;
-  animation: progressStripe 1s linear infinite;
+  background: linear-gradient(90deg, #ffd93d 0%, #ffaad4 35%, var(--pink-main) 70%, var(--pink-dark) 100%);
+  border-radius: 10px;
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background-size: 200% 100%;
+  animation: progressShine 2.5s linear infinite;
+  position: relative;
+  box-shadow: 0 0 12px rgba(255, 111, 179, 0.6);
 }
 
-@keyframes progressStripe {
-  from { background-position: 0 0; }
-  to { background-position: 16px 0; }
+@keyframes progressShine {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* 先端のキラキラハート */
+.progress-tip {
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 22px;
+  color: var(--pink-dark);
+  text-shadow: 0 0 10px #fff, 0 0 18px #ffd93d;
+  animation: tipBounce 0.8s ease-in-out infinite;
+  z-index: 2;
+  pointer-events: none;
+}
+
+@keyframes tipBounce {
+  0%, 100% { transform: translateY(-50%) scale(1); }
+  50%      { transform: translateY(-65%) scale(1.15); }
+}
+
+/* パーセント数値表示 */
+.progress-percent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 900;
+  font-size: 12px;
+  color: var(--text-dark);
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.9), -1px -1px 0 rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .progress-count {
@@ -444,6 +514,7 @@ body {
   letter-spacing: 0.3em;
   color: var(--pink-main);
   margin-bottom: 20px;
+  margin-top: 8px;
 }
 
 .btn-back {
