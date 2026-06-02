@@ -259,7 +259,7 @@ text(d, 580, TYO_Y + 65,
 # フッター URL
 box(d, 0, H - 60, W, 60, fill=(74, 44, 92), radius=0)
 text(d, W // 2, H - 30,
-     "https://gfd-creators.github.io/unmei/   ♡   v15.1.6  /  2026-06",
+     "https://gfd-creators.github.io/unmei/   ♡   v15.1.8  /  2026-06",
      F(18, False), '#fff')
 
 img.save(OUT, "PNG", optimize=True)
