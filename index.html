@@ -54,7 +54,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Kosugi+Maru&family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=15.2.1">
+<link rel="stylesheet" href="css/style.css?v=15.2.2">
+<style>
+  /* 相性チェック ヒーローCTA（バイラルループの起点） */
+  .compat-hero { background: linear-gradient(135deg,#fff0f7,#ffe4f1); border:2px solid #ff8fc4; border-radius:20px; padding:18px 16px; margin:22px 0 6px; text-align:center; box-shadow:0 4px 16px rgba(255,111,179,.18); }
+  .compat-hero-emoji { font-size:38px; line-height:1; }
+  .compat-hero-title { font-weight:800; color:#e8358c; font-size:18px; margin:6px 0 2px; }
+  .compat-hero-sub { color:#7a5290; font-size:12px; margin-bottom:12px; }
+  .btn-compat-hero { background:linear-gradient(135deg,#ff6fb3,#e8358c)!important; color:#fff!important; border:none!important; box-shadow:0 4px 14px rgba(232,53,140,.35)!important; }
+</style>
 </head>
 <body>
 
@@ -406,6 +414,17 @@
       <div class="card-text" id="result-prophecy"></div>
     </div>
 
+    <!-- ★主役★ 相性チェック（バイラルループの起点・最重要CTA） -->
+    <div class="compat-hero">
+      <div class="compat-hero-emoji">💞</div>
+      <div class="compat-hero-title">気になる あの人との 相性は？</div>
+      <div class="compat-hero-sub">好きな人・友達を 占って ふたりの運命を チェック ♡</div>
+      <button class="btn btn-compat-hero" onclick="if(window.ev)ev('compat_cta',{from:'result_hero'});openMyInviteShare();">
+        ★ ふたりの 相性を 診断する ★
+        <span class="btn-sub">招待リンクを 送るだけ ♡</span>
+      </button>
+    </div>
+
     <!-- 収益の出口（js/monetize.js が設定時のみ描画。空なら自動で非表示） -->
     <div id="monetize-note-slot"></div>
     <div id="monetize-affiliate-slot" class="pr-slot"></div>
@@ -415,7 +434,6 @@
         ★ 運命カードを つくる ★
         <span class="btn-sub">Instagram ストーリー 向け 縦長 画像</span>
       </button>
-      <button class="btn" onclick="openMyInviteShare()">★ 友達と 相性チェック ★</button>
       <a class="btn" href="types/" onclick="if(window.ev)ev('result_to_types',{from:'result'});">
         ★ ほかの運命タイプ図鑑を見る ★
         <span class="btn-sub">16タイプ・あなたと正反対の子・相性の子も</span>
@@ -487,17 +505,17 @@
 </div>
 
 <!-- v15.1: モジュール分離 -->
-<script src="js/data.js?v=15.2.1"></script>
-<script src="js/rare.js?v=15.2.1"></script>
-<script src="js/compatibility.js?v=15.2.1"></script>
-<script src="js/ranking.js?v=15.2.1"></script>
-<script src="js/share_actions.js?v=15.2.1"></script>
-<script src="js/ranking_card.js?v=15.2.1"></script>
-<script src="js/info_modal.js?v=15.2.1"></script>
-<script src="js/monetize.js?v=15.2.1"></script>
-<script src="js/flow.js?v=15.2.1"></script>
-<script src="js/share.js?v=15.2.1"></script>
-<script src="js/main.js?v=15.2.1"></script>
+<script src="js/data.js?v=15.2.2"></script>
+<script src="js/rare.js?v=15.2.2"></script>
+<script src="js/compatibility.js?v=15.2.2"></script>
+<script src="js/ranking.js?v=15.2.2"></script>
+<script src="js/share_actions.js?v=15.2.2"></script>
+<script src="js/ranking_card.js?v=15.2.2"></script>
+<script src="js/info_modal.js?v=15.2.2"></script>
+<script src="js/monetize.js?v=15.2.2"></script>
+<script src="js/flow.js?v=15.2.2"></script>
+<script src="js/share.js?v=15.2.2"></script>
+<script src="js/main.js?v=15.2.2"></script>
 
 </body>
 </html>
