@@ -22,6 +22,16 @@ function goToScreen(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + name).classList.add('active');
   window.scrollTo(0, 0);
+  // GA4 仮想ページビュー: SPA画面遷移の深さを計測（PV/セッションの代理指標）
+  // AdSense主軸の効果検証に必須。screen名を page_path に持たせて離脱地点も可視化。
+  if (typeof gtag === 'function') {
+    gtag('event', 'page_view', {
+      page_title: 'unmei / ' + name,
+      page_location: location.origin + location.pathname + '#' + name,
+      page_path: location.pathname + '#' + name,
+      screen_name: name
+    });
+  }
 }
 
 function openYearPicker() {

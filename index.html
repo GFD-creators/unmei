@@ -54,7 +54,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Kosugi+Maru&family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=15.1.9">
+<link rel="stylesheet" href="css/style.css?v=15.2.0">
 </head>
 <body>
 
@@ -412,6 +412,10 @@
         <span class="btn-sub">Instagram ストーリー 向け 縦長 画像</span>
       </button>
       <button class="btn" onclick="openMyInviteShare()">★ 友達と 相性チェック ★</button>
+      <a class="btn" href="types/" onclick="if(window.ev)ev('result_to_types',{from:'result'});">
+        ★ ほかの運命タイプ図鑑を見る ★
+        <span class="btn-sub">16タイプ・あなたと正反対の子・相性の子も</span>
+      </a>
       <button class="btn btn-outline" onclick="restart()">もういちどやる</button>
     </div>
 
@@ -478,16 +482,16 @@
 </div>
 
 <!-- v15.1: モジュール分離 -->
-<script src="js/data.js?v=15.1.9"></script>
-<script src="js/rare.js?v=15.1.9"></script>
-<script src="js/compatibility.js?v=15.1.9"></script>
-<script src="js/ranking.js?v=15.1.9"></script>
-<script src="js/share_actions.js?v=15.1.9"></script>
-<script src="js/ranking_card.js?v=15.1.9"></script>
-<script src="js/info_modal.js?v=15.1.9"></script>
-<script src="js/flow.js?v=15.1.9"></script>
-<script src="js/share.js?v=15.1.9"></script>
-<script src="js/main.js?v=15.1.9"></script>
+<script src="js/data.js?v=15.2.0"></script>
+<script src="js/rare.js?v=15.2.0"></script>
+<script src="js/compatibility.js?v=15.2.0"></script>
+<script src="js/ranking.js?v=15.2.0"></script>
+<script src="js/share_actions.js?v=15.2.0"></script>
+<script src="js/ranking_card.js?v=15.2.0"></script>
+<script src="js/info_modal.js?v=15.2.0"></script>
+<script src="js/flow.js?v=15.2.0"></script>
+<script src="js/share.js?v=15.2.0"></script>
+<script src="js/main.js?v=15.2.0"></script>
 
 </body>
 </html>
