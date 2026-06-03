@@ -269,6 +269,9 @@ function showResult() {
   // v15.1: 7軸全国ランキング描画
   renderRankingSection(state);
 
+  // 収益の出口（note課金導線 / アフィリPR枠）を描画 ※設定時のみ表示
+  if (typeof renderMonetize === 'function') renderMonetize(mbti);
+
   // GA: 結果表示 (MBTI/zodiac/rare をディメンション化)
   if (window.ev) {
     ev('result_view', {
