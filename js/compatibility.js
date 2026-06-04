@@ -24,6 +24,20 @@ function parseInviteParam(b64) {
     const json = decodeURIComponent(escape(atob(padded)));
     const data = JSON.parse(json);
     if (data.v !== 1) return null;
+
+    // --- 入力検証（防御の多層化）: 想定外の値は弾く / 名前は記号除去＋長さ制限 ---
+    const VALID_MBTI = ['INTJ','INTP','INFJ','INFP','ENFP','ENFJ','ENTJ','ENTP','ISTJ','ISFJ','ISTP','ISFP','ESTJ','ESFJ','ESTP','ESFP'];
+    if (!VALID_MBTI.includes(data.mbti)) return null;
+    if (typeof ZODIACS !== 'undefined' && !ZODIACS.includes(data.zodiac)) return null;
+    if (data.rareType != null && !(typeof RARE_TYPES !== 'undefined' && RARE_TYPES[data.rareType])) {
+      data.rareType = null;
+    }
+    if (typeof data.name === 'string') {
+      data.name = data.name.replace(/[<>"'`]/g, '').trim().slice(0, 20) || null;
+    } else {
+      data.name = null;
+    }
+    if (typeof data.luck !== 'number' || !isFinite(data.luck)) data.luck = null;
     return data;
   } catch (e) {
     console.error('Invalid invite param:', e);

@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- セキュリティ: CSP(許可先以外のスクリプト読込・通信をブロック) + リファラ抑制 + クリックジャッキング対策 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://pagead2.googlesyndication.com https://*.googlesyndication.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googlesyndication.com https://stats.g.doubleclick.net; frame-src https://googleads.g.doubleclick.net https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<script>if (window.top !== window.self) { try { window.top.location.replace(window.location.href); } catch (e) {} }</script>
+
 <title>運命図鑑 ウンメイ</title>
 
 <!-- Google Analytics 4 -->
@@ -54,7 +60,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Kosugi+Maru&family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=15.2.2">
+<link rel="stylesheet" href="css/style.css?v=15.2.3">
 <style>
   /* 相性チェック ヒーローCTA（バイラルループの起点） */
   .compat-hero { background: linear-gradient(135deg,#fff0f7,#ffe4f1); border:2px solid #ff8fc4; border-radius:20px; padding:18px 16px; margin:22px 0 6px; text-align:center; box-shadow:0 4px 16px rgba(255,111,179,.18); }
@@ -102,6 +108,7 @@
 
       <button class="btn" onclick="goToScreen('birthdate')">運命をみる</button>
       <div class="opening-meta">★ 全 2 0 問 / 3 分 で 完 了 ★</div>
+      <div style="margin-top:16px;font-size:11px;"><a href="privacy.html" style="color:#b9a;text-decoration:underline;">プライバシーポリシー</a></div>
     </div>
   </div>
 
@@ -505,17 +512,17 @@
 </div>
 
 <!-- v15.1: モジュール分離 -->
-<script src="js/data.js?v=15.2.2"></script>
-<script src="js/rare.js?v=15.2.2"></script>
-<script src="js/compatibility.js?v=15.2.2"></script>
-<script src="js/ranking.js?v=15.2.2"></script>
-<script src="js/share_actions.js?v=15.2.2"></script>
-<script src="js/ranking_card.js?v=15.2.2"></script>
-<script src="js/info_modal.js?v=15.2.2"></script>
-<script src="js/monetize.js?v=15.2.2"></script>
-<script src="js/flow.js?v=15.2.2"></script>
-<script src="js/share.js?v=15.2.2"></script>
-<script src="js/main.js?v=15.2.2"></script>
+<script src="js/data.js?v=15.2.3"></script>
+<script src="js/rare.js?v=15.2.3"></script>
+<script src="js/compatibility.js?v=15.2.3"></script>
+<script src="js/ranking.js?v=15.2.3"></script>
+<script src="js/share_actions.js?v=15.2.3"></script>
+<script src="js/ranking_card.js?v=15.2.3"></script>
+<script src="js/info_modal.js?v=15.2.3"></script>
+<script src="js/monetize.js?v=15.2.3"></script>
+<script src="js/flow.js?v=15.2.3"></script>
+<script src="js/share.js?v=15.2.3"></script>
+<script src="js/main.js?v=15.2.3"></script>
 
 </body>
 </html>

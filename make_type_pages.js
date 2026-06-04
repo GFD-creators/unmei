@@ -16,7 +16,7 @@ const vm = require('vm');
 const ROOT = __dirname;
 const OUT_DIR = path.join(ROOT, 'types');
 const SITE = 'https://gfd-creators.github.io/unmei';
-const VER = '15.2.2';
+const VER = '15.2.3';
 
 // ---- data.js + ranking.js を読み込んで定数/関数を取り出す ----
 const dataCode = fs.readFileSync(path.join(ROOT, 'js', 'data.js'), 'utf8');
@@ -73,6 +73,9 @@ function head(title, desc, canonical) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://pagead2.googlesyndication.com https://*.googlesyndication.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googlesyndication.com https://stats.g.doubleclick.net; frame-src https://googleads.g.doubleclick.net https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<script>if (window.top !== window.self) { try { window.top.location.replace(window.location.href); } catch (e) {} }</script>
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${canonical}">
@@ -253,7 +256,7 @@ function typePage(mbti) {
 
   ${adSlot('type-bottom')}
   <div style="text-align:center;margin-top:24px;font-size:11px;color:#b9a;">
-    <a href="../index.html" style="color:#e8358c;">運命図鑑 ウンメイ</a> ｜ MBTI × 干支 で占う 運命キャラ図鑑
+    <a href="../index.html" style="color:#e8358c;">運命図鑑 ウンメイ</a> ｜ MBTI × 干支 で占う 運命キャラ図鑑<br><a href="../privacy.html" style="color:#b9a;">プライバシーポリシー</a>
   </div>
 </div>
 </body>
@@ -319,7 +322,7 @@ ${rankingBlock(mbti, zodiac)}
 
   ${adSlot('combo-bottom')}
   <div style="text-align:center;margin-top:24px;font-size:11px;color:#b9a;">
-    <a href="../index.html" style="color:#e8358c;">運命図鑑 ウンメイ</a> ｜ MBTI × 干支 で占う 運命キャラ図鑑
+    <a href="../index.html" style="color:#e8358c;">運命図鑑 ウンメイ</a> ｜ MBTI × 干支 で占う 運命キャラ図鑑<br><a href="../privacy.html" style="color:#b9a;">プライバシーポリシー</a>
   </div>
 </div>
 </body>
@@ -359,7 +362,7 @@ ${cards}
     </a>
   </div>
   <div style="text-align:center;margin-top:24px;font-size:11px;color:#b9a;">
-    <a href="../index.html" style="color:#e8358c;">運命図鑑 ウンメイ</a> ｜ MBTI × 干支 で占う 運命キャラ図鑑
+    <a href="../index.html" style="color:#e8358c;">運命図鑑 ウンメイ</a> ｜ MBTI × 干支 で占う 運命キャラ図鑑<br><a href="../privacy.html" style="color:#b9a;">プライバシーポリシー</a>
   </div>
 </div>
 </body>
