@@ -451,6 +451,8 @@ function showCompatibilityResult() {
 
   window._lastCompResult = result;
 
+  // 相性結果を表示＝ループの「着地」。K-factor計測用
+  if (window.ev) ev('compat_viewed', { total: result.total, rank: result.rankInfo.rank, is_same: result.isSameType });
   goToScreen('compatibility');
 }
 
@@ -462,6 +464,8 @@ function openMyInviteShare() {
     alert('まず占いを完了してね');
     return;
   }
+  // 招待を作る＝ループの「起点」。K-factor計測用
+  if (window.ev) ev('invite_created', { mbti: state.finalMBTI, zodiac: state.zodiac });
   document.getElementById('invite-share-modal').classList.add('active');
   updateInviteUrl();
 }
@@ -484,6 +488,7 @@ function updateInviteUrl() {
 function copyInviteUrl() {
   const url = window._currentInviteUrl;
   if (!url) return;
+  if (window.ev) ev('invite_share', { method: 'copy' });
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(url).then(showCopySuccess).catch(() => fallbackCopy(url));
   } else {
@@ -516,6 +521,7 @@ function showCopySuccess() {
 function shareInviteToLine() {
   const url = window._currentInviteUrl;
   if (!url) return;
+  if (window.ev) ev('invite_share', { method: 'line' });
   const text = encodeURIComponent('運命図鑑であなたとの相性をみてみない？♡ ');
   const lineUrl = `https://line.me/R/msg/text/?${text}${encodeURIComponent(url)}`;
   window.open(lineUrl, '_blank');

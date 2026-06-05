@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gfd-creators.github.io/unmei/sitemap.xml

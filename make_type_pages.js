@@ -16,7 +16,7 @@ const vm = require('vm');
 const ROOT = __dirname;
 const OUT_DIR = path.join(ROOT, 'types');
 const SITE = 'https://gfd-creators.github.io/unmei';
-const VER = '15.2.3';
+const VER = '15.2.4';
 
 // ---- data.js + ranking.js を読み込んで定数/関数を取り出す ----
 const dataCode = fs.readFileSync(path.join(ROOT, 'js', 'data.js'), 'utf8');
@@ -381,5 +381,19 @@ for (const m of MBTI_ORDER) {
   }
 }
 fs.writeFileSync(path.join(OUT_DIR, 'index.html'), hubPage(), 'utf8');
+
+// ---- sitemap.xml（全ページをGoogleに通知。Search Consoleで登録する）----
+const smUrls = [SITE + '/', SITE + '/privacy.html', SITE + '/types/'];
+for (const m of MBTI_ORDER) {
+  smUrls.push(`${SITE}/types/${m.toLowerCase()}.html`);
+  for (const z of ZODIAC_ORDER) smUrls.push(`${SITE}/types/${m.toLowerCase()}-${ZODIAC_INFO[z].romaji}.html`);
+}
+const today = new Date().toISOString().slice(0, 10);
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+  smUrls.map(u => `  <url><loc>${u}</loc><lastmod>${today}</lastmod></url>`).join('\n') +
+  `\n</urlset>\n`;
+fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap, 'utf8');
+
 console.log(`✅ 生成完了: ハブ1 + タイプ${typeCount} + 干支別${comboCount} = 計${1 + typeCount + comboCount}ファイル`);
+console.log(`   sitemap.xml: ${smUrls.length} URL`);
 console.log(`   出力先: ${OUT_DIR}`);

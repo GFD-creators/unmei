@@ -46,6 +46,8 @@ function initialize() {
   if (inviteParam) {
     const partnerData = parseInviteParam(inviteParam);
     if (partnerData && partnerData.mbti && partnerData.zodiac) {
+      // 招待リンクから来訪＝ループの「拡散」。K-factor計測用
+      if (window.ev) ev('invite_opened', { partner_mbti: partnerData.mbti, partner_zodiac: partnerData.zodiac });
       showInviteWelcome(partnerData);
       return;
     }
