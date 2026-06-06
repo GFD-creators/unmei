@@ -24,8 +24,19 @@ window.UNMEI_MONETIZE = {
 
   // ② アフィリエイト広告枠（A8.net / もしも 等）--------------
   affiliate: {
-    enabled: false,                 // ← 広告コードを貼ったら true に
-    html: ''                        // ← ASPでコピーした広告タグ(<a>…</a>や<iframe>)をそのまま貼る
+    enabled: true,                  // ← 広告コードを貼ったら true に
+    // items に複数入れるとランダムで1つ表示（A8管理画面で a8mat別に成果比較できる）
+    items: [
+      // ① ココナラ メール占い（¥2,000 / 確定率99%）
+      `<a href="https://px.a8.net/svt/ejp?a8mat=4B5N49+RDYLU+2PEO+1BWBM9" rel="nofollow">
+<img border="0" width="300" height="250" alt="ココナラ メール占い" src="https://www29.a8.net/svt/bgt?aid=260603721046&wid=001&eno=01&mid=s00000012624008045000&mc=1"></a>
+<img border="0" width="1" height="1" src="https://www15.a8.net/0.gif?a8mat=4B5N49+RDYLU+2PEO+1BWBM9" alt="">`,
+      // ② ココナラ 電話占い（¥16,000 / EPC50）
+      `<a href="https://px.a8.net/svt/ejp?a8mat=4B5N49+H9LBM+2PEO+C4LLD" rel="nofollow">
+<img border="0" width="300" height="250" alt="ココナラ 電話占い" src="https://www24.a8.net/svt/bgt?aid=260603721029&wid=001&eno=01&mid=s00000012624002037000&mc=1"></a>
+<img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4B5N49+H9LBM+2PEO+C4LLD" alt="">`
+    ],
+    html: ''                        // ← 単発で貼りたい時はこちらでも可（items優先）
   }
 };
 
@@ -79,16 +90,18 @@ function renderMonetize(mbti) {
     }
   }
 
-  // --- ② アフィリ PR枠 ---
+  // --- ② アフィリ PR枠（itemsからランダム1つ表示）---
   const afSlot = document.getElementById('monetize-affiliate-slot');
   if (afSlot) {
     afSlot.innerHTML = '';
     const af = cfg.affiliate || {};
-    if (af.enabled && af.html) {
-      afSlot.innerHTML = '<div class="pr-label">PR</div>' + af.html;
+    const items = (af.items && af.items.length) ? af.items : (af.html ? [af.html] : []);
+    if (af.enabled && items.length) {
+      const idx = Math.floor(Math.random() * items.length);
+      afSlot.innerHTML = '<div class="pr-label">PR</div>' + items[idx];
       afSlot.querySelectorAll('a').forEach(function (el) {
         el.addEventListener('click', function () {
-          if (window.ev) ev('monetize_click', { kind: 'affiliate', mbti: mbti });
+          if (window.ev) ev('monetize_click', { kind: 'affiliate', mbti: mbti, ad: idx });
         });
       });
     }
