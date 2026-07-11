@@ -67,6 +67,13 @@ function validateAndProceed() {
     if (window.ev) ev('birthdate_validation_error');
     return;
   }
+  // 実在日チェック（2/31 や 4/31 のような存在しない日付を弾く）
+  const dt = new Date(year, month - 1, day);
+  if (dt.getFullYear() !== year || dt.getMonth() !== month - 1 || dt.getDate() !== day) {
+    alert('その日はカレンダーにないみたい…');
+    if (window.ev) ev('birthdate_validation_error');
+    return;
+  }
 
   state.year = year;
   state.month = month;
@@ -117,7 +124,13 @@ function updateCheer(qIndex) {
   el.style.animation = '';
 }
 
+// 連打対策: 回答〜次問描画までの間、追加の回答を受け付けない
+let _answerLocked = false;
+
 function renderQuestion() {
+  // 連打等で index が範囲外になった場合は描画しない（最終問の多重回答対策）
+  if (state.questionIndex < 0 || state.questionIndex >= QUESTIONS.length) return;
+  _answerLocked = false;
   const q = QUESTIONS[state.questionIndex];
   const totalQ = QUESTIONS.length;
   const qNum = state.questionIndex + 1;
@@ -148,6 +161,13 @@ function renderQuestion() {
 }
 
 function answerQuestion(axis) {
+  if (_answerLocked) return; // 連打の二重実行防止
+  _answerLocked = true;
+  // 押下直後にボタンを無効化（次問描画 renderQuestion で作り直されるまで）
+  document.querySelectorAll('#q-options .answer-btn').forEach((b) => {
+    b.disabled = true;
+    b.style.opacity = '0.6';
+  });
   state.mbti[axis]++;
   state.answerHistory.push(axis);
   state.questionIndex++;
