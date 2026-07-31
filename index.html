@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <!-- セキュリティ: CSP(許可先以外のスクリプト読込・通信をブロック) + リファラ抑制 + クリックジャッキング対策 -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://pagead2.googlesyndication.com https://*.googlesyndication.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googlesyndication.com https://stats.g.doubleclick.net; frame-src https://googleads.g.doubleclick.net https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net https://pagead2.googlesyndication.com https://*.googlesyndication.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.facebook.com https://*.googlesyndication.com https://stats.g.doubleclick.net; frame-src https://googleads.g.doubleclick.net https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if (window.top !== window.self) { try { window.top.location.replace(window.location.href); } catch (e) {} }</script>
 
@@ -26,6 +26,47 @@
     if (typeof gtag === 'function') gtag('event', name, params || {});
   };
 </script>
+
+<!-- Meta (Facebook / Instagram) Pixel -->
+<script>
+  // ▼▼▼ Meta広告マネージャで発行したピクセルIDをここに入れる (12〜16桁の数字) ▼▼▼
+  //     参照: イベントマネージャ → データソース → ピクセル → ID
+  //     プレースホルダのままなら計測は無効化され、コンソールエラーも出ない (安全にコミット可)
+  window.META_PIXEL_ID = 'YOUR_META_PIXEL_ID';
+  // ▲▲▲ 下の <noscript> 内のIDも同じ値に置き換えること ▲▲▲
+
+  (function () {
+    var PID = String(window.META_PIXEL_ID || '');
+    var enabled = /^\d{6,}$/.test(PID);   // 数字IDが設定されている時だけ発火
+
+    // 公式 fbq スニペット (fbevents.js をロード)
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+      document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+    if (enabled) {
+      fbq('init', PID);
+      fbq('track', 'PageView');
+    }
+
+    // 既存の ev()(GA4送信) に Meta ピクセルへの転送を相乗りさせる。
+    // これで quiz_start / result_view / share_attempt など全カスタムイベントが
+    // 自動で Meta にも送られる。主要地点は Meta 標準イベントにもマップして最適化に使う。
+    var STD = { result_view: 'ViewContent', monetize_click: 'Lead' };
+    var _ev = window.ev || function () {};
+    window.ev = function (name, params) {
+      _ev(name, params);                              // GA4送信は従来どおり
+      if (enabled && typeof fbq === 'function') {
+        if (STD[name]) fbq('track', STD[name], params || {});
+        fbq('trackCustom', name, params || {});       // 生イベントもカスタムで送信
+      }
+    };
+  })();
+</script>
+<noscript><img height="1" width="1" style="display:none" alt=""
+  src="https://www.facebook.com/tr?id=YOUR_META_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
 
 <!-- PWA Phase 1 -->
 <link rel="manifest" href="manifest.json">
