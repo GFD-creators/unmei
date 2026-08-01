@@ -67,6 +67,13 @@ def icon_bookmark(d, cx, cy, s, color):
            fill=color, width=6, joint="curve")
 
 
+def icon_carousel(d, cx, cy, s, color):
+    # 複数枚(カルーセル)インジケータ: 重なった紙 右上
+    d.rounded_rectangle((cx - s + 10, cy - s - 10, cx + s + 10, cy + s - 10),
+                        radius=6, outline=color, width=5)
+    d.rounded_rectangle((cx - s, cy - s, cx + s, cy + s), radius=6, fill=color)
+
+
 def circle_avatar(path, size):
     im = Image.open(path).convert("RGBA")
     # 顔まわり(上部中央)をトリミング
@@ -99,13 +106,14 @@ def wrap(text, f, max_w):
     return lines
 
 
-def build(post_img, username, likes, caption, hashtags, comments, when):
+def build(post_img, username, likes, caption, hashtags, comments, when,
+          carousel=False, pages=6):
     img = Image.open(POSTS / post_img).convert("RGB")
     r = W / img.width
     img = img.resize((W, int(img.height * r)), Image.LANCZOS)
 
     header_h = 150
-    action_h = 120
+    action_h = 150 if carousel else 120
     # 本文領域の高さを見積り
     f_user = M.font(38)
     f_body = M.font(36)
@@ -134,9 +142,22 @@ def build(post_img, username, likes, caption, hashtags, comments, when):
 
     # --- 投稿画像 ---
     canvas.paste(img, (0, header_h))
+    if carousel:
+        icon_carousel(d, W - 62, header_h + 58, 20, WHITE)
 
-    # --- アクションバー ---
-    ay = header_h + img.height + action_h // 2
+    # --- カルーセルのページドット + アクションバー ---
+    action_top = header_h + img.height
+    if carousel:
+        n = min(pages, 5)
+        dot_r, spacing = 8, 34
+        total = (n - 1) * spacing
+        for i in range(n):
+            dx = W / 2 - total / 2 + i * spacing
+            col = BLUE if i == 0 else (200, 200, 200)
+            d.ellipse((dx - dot_r, action_top + 30 - dot_r, dx + dot_r, action_top + 30 + dot_r), fill=col)
+        ay = action_top + 98
+    else:
+        ay = action_top + action_h // 2
     icon_heart(d, PAD + 30, ay, 30, INK)
     icon_comment(d, PAD + 120, ay, 28, INK)
     icon_share(d, PAD + 210, ay, 28, INK)
@@ -189,6 +210,38 @@ MOCKS = [
         hashtags="#相性診断 #MBTI相性 #恋愛占い #好きな人 #占い #心理テスト",
         comments="128",
         when="5時間前",
+    ),
+    dict(
+        out="mockup_03_eto.png",
+        post_img="post_03_eto.jpg",
+        username="unmei_uranai",
+        likes="1,326",
+        caption="同じMBTIなのに性格がちがう…その正体、干支かも？ MBTI×干支で全192タイプに診断できるよ。あなたの組み合わせは何タイプ？プロフィールのリンクから無料診断♡",
+        hashtags="#MBTI #MBTI診断 #干支 #占い #無料占い #運命図鑑ウンメイ",
+        comments="47",
+        when="1日前",
+    ),
+    dict(
+        out="mockup_02_aruaru.png",
+        post_img="post_02_aruaru.jpg",
+        username="unmei_uranai",
+        likes="3,904",
+        caption="“好き”ってこんな所でバレてる…？【MBTI別】気になる人の前でつい出ちゃう仕草、タイプごとに全然ちがう！あなたはどれ？自分の型はコメントで教えてね♡",
+        hashtags="#MBTIあるある #MBTI診断 #性格診断 #恋愛あるある #心理テスト #占い",
+        comments="256",
+        when="2日前",
+        carousel=True,
+        pages=6,
+    ),
+    dict(
+        out="mockup_04_rare.png",
+        post_img="post_04_rare.jpg",
+        username="unmei_uranai",
+        likes="5,271",
+        caption="出現率わずか1%…あなたは“レアキャラ”を引けるか。ふつうは出会えない隠れレアが全4体。引けたらスクショして自慢してね。運命キャラを無料診断、リンクから♡",
+        hashtags="#運命図鑑ウンメイ #レアキャラ #占い #無料占い #MBTI #診断メーカー",
+        comments="341",
+        when="6時間前",
     ),
 ]
 
