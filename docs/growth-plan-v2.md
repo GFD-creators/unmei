@@ -47,7 +47,7 @@
 
 | # | 施策 | 効くエンジン | 状態 |
 |---|---|---|---|
-| **1** | **タイプ別OGP 208枚**＋各ページの`og:image`差替 | バイラル（X主役） | サンプル完了・要GO |
+| **1** | **タイプ別OGP 208枚**＋各ページの`og:image`差替 | バイラル（X主役） | ✅ **完了** |
 | 2 | シェア画像にURL/CTA/型別フックを入れ、画像→サイト回帰を作る | バイラル | 未 |
 | 3 | X/LINEシェア文言を結果別に最適化（煽り＋ハッシュタグ） | バイラル | 未 |
 | 4 | 構造化データ（Article / FAQ / Breadcrumb）を全型ページに付与 | SEO | 未 |
@@ -71,10 +71,18 @@
 
 **生成方法**
 ```bash
-node dump_type_data.js          # data.js/ranking.js から _data.json を生成
+node dump_type_data.js           # data.js/ranking.js から _data.json を生成
 python make_type_ogp.py --sample # サンプル4枚（デザイン確認用）
-python make_type_ogp.py          # 全208枚
+python make_type_ogp.py          # 全208枚 -> assets/og/types/*.jpg (約16.6MB)
+node make_type_pages.js          # 209ページを再生成(og:imageが個別画像を指す)
 ```
+
+**実装結果（完了）**
+- 208枚を **JPEG q90** で出力（PNGだと32.5MB→16.6MBに半減。見た目の劣化なし）
+- `make_type_pages.js` の `head()` に `ogImage` 引数を追加し、**再生成しても崩れない**ように統合
+- `og:image:width/height/alt` も追加（クロールとアクセシビリティのため）
+- 検証: 参照418件すべて実在（**欠損0**）、**ユニークOGP 209種類**（旧1種類）
+- ハブページ（`types/`）のみ共通OGPのまま（一覧ページのため意図的）
 
 ---
 

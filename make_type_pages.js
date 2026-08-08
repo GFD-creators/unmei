@@ -67,7 +67,10 @@ function imgTag(mbti, cls) {
 }
 
 // ---- 共通 head ----
-function head(title, desc, canonical) {
+// ogImage: タイプ別OGP画像の絶対URL。省略時はサイト共通のOGPにフォールバック。
+// (make_type_ogp.py が assets/og/types/{slug}.jpg を生成する)
+function head(title, desc, canonical, ogImage) {
+  const ogImg = ogImage || `${SITE}/assets/og/ogp.png`;
   return `<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -99,10 +102,13 @@ function head(title, desc, canonical) {
 <meta property="og:type" content="article">
 <meta property="og:url" content="${canonical}">
 <meta property="og:site_name" content="運命図鑑 ウンメイ">
-<meta property="og:image" content="${SITE}/assets/og/ogp.png">
+<meta property="og:image" content="${ogImg}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${esc(title)}">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="${SITE}/assets/og/ogp.png">
+<meta name="twitter:image" content="${ogImg}">
 
 <link rel="manifest" href="../manifest.json">
 <meta name="theme-color" content="#ff6fb3">
@@ -191,8 +197,9 @@ function typePage(mbti) {
   const title = `${d.name}（${mbti}型）の性格・恋愛・相性 | 運命図鑑`;
   const desc = clip(`${d.catch}。${d.desc}`, 118);
   const canonical = `${SITE}/types/${mbti.toLowerCase()}.html`;
+  const ogImage = `${SITE}/assets/og/types/${mbti.toLowerCase()}.jpg`;
 
-  return head(title, desc, canonical) + `
+  return head(title, desc, canonical, ogImage) + `
 <div class="tp-wrap">
   <nav class="tp-nav">
     <a href="index.html">★ 図鑑トップ</a>
@@ -270,8 +277,9 @@ function comboPage(mbti, zodiac) {
   const title = `${zodiac}年生まれの${d.name}（${mbti}）｜性格・恋愛・相性・偏差値 | 運命図鑑`;
   const desc = clip(`${zodiac}年(${zi.yomi})生まれで${mbti}「${d.name}」のあなたの性格・恋愛・相性・全国偏差値。${d.catch}。${zi.blurb}`, 120);
   const canonical = `${SITE}/types/${mbti.toLowerCase()}-${zi.romaji}.html`;
+  const ogImage = `${SITE}/assets/og/types/${mbti.toLowerCase()}-${zi.romaji}.jpg`;
 
-  return head(title, desc, canonical) + `
+  return head(title, desc, canonical, ogImage) + `
 <div class="tp-wrap">
   <nav class="tp-nav">
     <a href="${mbti.toLowerCase()}.html">★ ${esc(d.name)}</a>

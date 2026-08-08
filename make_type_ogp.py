@@ -170,12 +170,17 @@ def main():
     data = json.loads(DATA.read_text(encoding="utf-8"))
     types = data["types"]
 
+    # 出力は JPEG(q90)。PNGだと208枚で約32MBになりリポジトリが重くなるため
+    # (q90では見た目の劣化は無く、容量は約半分)
+    def save(img, stem):
+        p = OUT / f"{stem}.jpg"
+        img.save(p, "JPEG", quality=90, optimize=True)
+        return p
+
     if args.sample:
         targets = [t for t in types if t["slug"] in SAMPLES]
         for t in targets:
-            img = compose(t)
-            p = OUT / f"{t['slug']}.png"
-            img.save(p, "PNG", optimize=True)
+            p = save(compose(t), t["slug"])
             print(f"  -> {p.name}  ({p.stat().st_size // 1024}KB)")
         print(f"[OK] sample {len(targets)} -> {OUT}")
         return
@@ -183,18 +188,16 @@ def main():
     n = 0
     # MBTI×干支 192枚
     for t in types:
-        img = compose(t)
-        img.save(OUT / f"{t['slug']}.png", "PNG", optimize=True)
+        save(compose(t), t["slug"])
         n += 1
     # MBTI単体 16枚
     for mbti, m in data["mbti"].items():
         t = dict(m, mbti=mbti, zodiac="", zodiacYomi="",
-                 bestAxisLabel="", bestTier=None, bestTopPercent=None)
-        t["bestAxisLabel"] = "192タイプ診断"
-        img = compose(t, is_mbti_only=True)
-        img.save(OUT / f"{mbti.lower()}.png", "PNG", optimize=True)
+                 bestAxisLabel="192タイプ診断", bestTier=None, bestTopPercent=None)
+        save(compose(t, is_mbti_only=True), mbti.lower())
         n += 1
-    print(f"[OK] {n} OGP images -> {OUT}")
+    total_mb = sum(p.stat().st_size for p in OUT.glob("*.jpg")) / 1024 / 1024
+    print(f"[OK] {n} OGP images -> {OUT}  ({total_mb:.1f}MB)")
 
 
 if __name__ == "__main__":
